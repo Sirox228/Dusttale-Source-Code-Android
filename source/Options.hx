@@ -93,7 +93,7 @@ class CustomControls extends Option
 
 class FifthhitboxPos extends Option
 {
-	var adresses = ["Dodge Button", "5th hitbox in upper part of screen", "5th hitbox in the bottom of the screen"];
+	var adresses = ["PlaceHolder", "Dodge Button", "5th hitbox at the top", "5th hitbox at the bottom"];
 	public function new(desc:String)
 	{
 		super();
