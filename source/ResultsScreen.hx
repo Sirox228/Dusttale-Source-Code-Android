@@ -175,7 +175,7 @@ class ResultsScreen extends MusicBeatSubstate
 
         // keybinds
 
-        if (controls.ACCEPT)
+        if (controls.ACCEPT #if android || _virtualpad.buttonA.justPressed #end)
         {
             music.fadeOut(0.3);
             
