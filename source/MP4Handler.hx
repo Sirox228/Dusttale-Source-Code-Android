@@ -24,7 +24,7 @@ class MP4Handler
 	public static var netStream:NetStream;
 	#end
 
-	public static var finishCallback:Void->Void;
+	public var finishCallback:Void->Void;
 	public var sprite:FlxSprite;
 	#if desktop
 	public static var vlcBitmap:VlcBitmap;
