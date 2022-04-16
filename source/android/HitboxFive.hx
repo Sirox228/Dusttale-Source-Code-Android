@@ -70,7 +70,7 @@ class HitboxFive extends FlxSpriteGroup
             }
             case KSPUP:
             {
-            	hitbox_hint.loadGraphic('assets/images/androidcontrols/hitbox_five_hint.png');
+            	hitbox_hint.loadGraphic('assets/images/androidcontrols/hitbox_five-up-hint.png');
 
                 frameshb = FlxAtlasFrames.fromSparrow('assets/images/androidcontrols/hitbox_five.png', 'assets/images/androidcontrols/hitbox_five.xml');
                 sizex = 320;
