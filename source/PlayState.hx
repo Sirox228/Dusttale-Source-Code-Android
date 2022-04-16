@@ -84,6 +84,7 @@ class PlayState extends MusicBeatState
 	public static var instance:PlayState = null;
 	
 	public static var usefh:Bool = false;
+	public static var usefhalt:Bool = false;
 
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
@@ -173,6 +174,7 @@ class PlayState extends MusicBeatState
 	private var ss:Bool = false;
 	
 	var _hitbox:HitboxFive;
+	var _hitboxalt:HitboxFive;
 
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
@@ -1466,6 +1468,9 @@ class PlayState extends MusicBeatState
 			replayTxt.cameras = [camHUD];
 
         #if android
+        _hitboxalt = new HitboxFive(KSP);
+        _hitbox = new HitboxFive(KSPUP);
+        _virtualpad = new FlxVirtualPad(NONE, D, 0.75, true);
         if (SONG.song.toLowerCase() != 'anthropophobia') {
 		    addAndroidControls();
 		} else {
@@ -1489,13 +1494,10 @@ class PlayState extends MusicBeatState
 		            androidc.cameras = [camcontrol];
 		            androidc.visible = false;
 		            add(androidc);
-			        _virtualpad = new FlxVirtualPad(NONE, D, 0.75, true);
 			        _virtualpad.cameras = [camcontrol];
 			        _virtualpad.visible = false;
 			        add(_virtualpad);
 			    case 2:
-			        var curcontrol:HitboxType = KSPUP;
-			        _hitbox = new HitboxFive(curcontrol);
 		            var camcontrol = new FlxCamera();
 		            FlxG.cameras.add(camcontrol);
 		            camcontrol.bgColor.alpha = 0;
@@ -1504,15 +1506,13 @@ class PlayState extends MusicBeatState
 		            usefh = true;
 		            add(_hitbox);
 		        case 3:
-		            var curcontrol:HitboxType = KSP;
-			        _hitbox = new HitboxFive(curcontrol);
 		            var camcontrol = new FlxCamera();
 		            FlxG.cameras.add(camcontrol);
 		            camcontrol.bgColor.alpha = 0;
-		            _hitbox.cameras = [camcontrol];
-		            _hitbox.visible = false;
-		            usefh = true;
-		            add(_hitbox);
+		            _hitboxalt.cameras = [camcontrol];
+		            _hitboxalt.visible = false;
+		            usefhalt = true;
+		            add(_hitboxalt);
 			}
 		}
         #end
@@ -1637,8 +1637,10 @@ class PlayState extends MusicBeatState
 		{
 			androidc.visible = true;
 			_virtualpad.visible = true;
-		} else if (SONG.song.toLowerCase() == 'anthropophobia' && (FlxG.save.data.dcontrol == 2 || FlxG.save.data.dcontrol == 3)) {
+		} else if (SONG.song.toLowerCase() == 'anthropophobia' && FlxG.save.data.dcontrol == 2) {
 			_hitbox.visible = true;
+		} else if (SONG.song.toLowerCase() == 'anthropophobia' && FlxG.save.data.dcontrol == 3) { 
+			_hitboxalt.visible = true;
 		} else {
 			androidc.visible = true;
 		}
@@ -2382,8 +2384,8 @@ class PlayState extends MusicBeatState
 		
 		var buttonPressedLOL:Bool = false;
 		
-		if (usefh) {
-			buttonPressedLOL = _hitbox.KSP.justPressed;
+		if (usefh || usefhalt) {
+			buttonPressedLOL = _hitbox.KSP.justPressed || _hitboxalt.KSP.justPressed;
 		} else {
 			buttonPressedLOL = _virtualpad.buttonD.justPressed;
 		}
@@ -3786,6 +3788,29 @@ class PlayState extends MusicBeatState
 				    if (_hitbox.K2.justReleased){luaModchart.executeState('keyPressed',["down"]);};
 				    if (_hitbox.K3.justReleased){luaModchart.executeState('keyPressed',["up"]);};
 				    if (_hitbox.K4.justReleased){luaModchart.executeState('keyPressed',["right"]);};
+				    };
+				    #end
+				} else if (usefhalt) {
+					// control arrays, order L D R U
+				    holdArray = [_hitboxalt.K1.pressed, _hitboxalt.K2.pressed, _hitboxalt.K3.pressed, _hitboxalt.K4.pressed];
+				    pressArray = [
+					    _hitboxalt.K1.justPressed,
+					    _hitboxalt.K2.justPressed,
+					    _hitboxalt.K3.justPressed,
+					    _hitboxalt.K4.justPressed
+				    ];
+				    releaseArray = [
+					    _hitboxalt.K1.justReleased,
+					    _hitboxalt.K2.justReleased,
+					    _hitboxalt.K3.justReleased,
+					    _hitboxalt.K4.justReleased
+				    ];
+				    #if cpp
+				    if (luaModchart != null){
+				    if (_hitboxalt.K1.justReleased){luaModchart.executeState('keyPressed',["left"]);};
+				    if (_hitboxalt.K2.justReleased){luaModchart.executeState('keyPressed',["down"]);};
+				    if (_hitboxalt.K3.justReleased){luaModchart.executeState('keyPressed',["up"]);};
+				    if (_hitboxalt.K4.justReleased){luaModchart.executeState('keyPressed',["right"]);};
 				    };
 				    #end
 				} else {
