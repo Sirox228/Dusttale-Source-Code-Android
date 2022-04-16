@@ -2378,12 +2378,17 @@ class PlayState extends MusicBeatState
 				}
 				// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
 		}
-
-
-
+		
+		var buttonPressedLOL:Bool = false;
+		
+		if (_virtualpad.buttonD.justPressed || _hitbox.KSP.justPressed) {
+			buttonPressedLOL = true;
+		}
+		
 		//bf slash mechanic in d.i.e
-		if (FlxG.keys.justPressed.SPACE #if android || _virtualpad.buttonD.justPressed #end && (SONG.song.toLowerCase() == 'anthropophobia'))
+		if ((FlxG.keys.justPressed.SPACE || buttonPressedLOL) && (SONG.song.toLowerCase() == 'anthropophobia'))
 		{
+			buttonPressedLOL = false;
 			attack.visible = false;
 
 			boyfriend.playAnim("slash");
