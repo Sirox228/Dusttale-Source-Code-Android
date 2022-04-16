@@ -2,7 +2,9 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': DUSTTALE" file="FNF DUSTTALE" packageName="com.kadedev.kadeengine" package="com.kadedev.kadeengine" main="Main" version="2.0.0" company="WassabiSoja" />
+	<app title="FNF: DUSTTALE" file="FNF DUSTTALE" packageName="com.sawosirox.dustything" package="com.sawosirox.dustything" main="Main" version="2.0.0" company="sawosirox" />
+	
+	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC -->
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -64,9 +66,6 @@
 
 	<assets path="assets/videos" exclude="*.mp3" if="web"/>
 	<assets path="assets/videos" exclude="*.ogg" unless="web"/>
-
-	<assets path="plugins/" rename='' if="windows"/>
-	<assets path="dlls/" rename='' if="windows"/>
 
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
@@ -140,6 +139,8 @@
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
+	
+	<haxedef name="HXCPP_GC_BIG_BLOCKS"/> <!-- make's game use less ram -->
 
 	<!-- Akways enable Null Object Reference check -->
 	<haxedef name="HXCPP_CHECK_POINTER" if="release" />
