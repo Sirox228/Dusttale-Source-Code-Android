@@ -106,7 +106,7 @@ class FifthhitboxPos extends Option
 		    FlxG.save.data.dcontrol = 2;
 		} else if (FlxG.save.data.dcontrol == 2) {
 			FlxG.save.data.dcontrol = 3;
-		} else if ((FlxG.save.data.dcontrol == 3) {
+		} else if (FlxG.save.data.dcontrol == 3) {
 			FlxG.save.data.dcontrol = 1;
 		}
 		display = updateDisplay();
