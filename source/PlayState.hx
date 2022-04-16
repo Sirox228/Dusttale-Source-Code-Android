@@ -67,6 +67,7 @@ import openfl.utils.Assets as OpenFlAssets;
 #if android
 import android.HitboxFive;
 import android.AndroidControls;
+import android.FlxVirtualPad;
 #end
 #if windows
 import Discord.DiscordClient;
@@ -1465,7 +1466,7 @@ class PlayState extends MusicBeatState
 			replayTxt.cameras = [camHUD];
 
         #if android
-        if (!PlayState.SONG.song.toLowerCase() == 'anthropophobia') {
+        if (SONG.song.toLowerCase() != 'anthropophobia') {
 		    addAndroidControls();
 		} else {
 			switch(FlxG.save.data.dcontrol) {
@@ -1494,7 +1495,7 @@ class PlayState extends MusicBeatState
 			        add(_virtualpad);
 			    case 2:
 			        var curcontrol:HitboxType = KSPUP;
-			        _hitbox = new Hitbox(curcontrol);
+			        _hitbox = new HitboxFive(curcontrol);
 		            var camcontrol = new FlxCamera();
 		            FlxG.cameras.add(camcontrol);
 		            camcontrol.bgColor.alpha = 0;
@@ -1504,7 +1505,7 @@ class PlayState extends MusicBeatState
 		            add(_hitbox);
 		        case 3:
 		            var curcontrol:HitboxType = KSP;
-			        _hitbox = new Hitbox(curcontrol);
+			        _hitbox = new HitboxFive(curcontrol);
 		            var camcontrol = new FlxCamera();
 		            FlxG.cameras.add(camcontrol);
 		            camcontrol.bgColor.alpha = 0;
@@ -1639,7 +1640,7 @@ class PlayState extends MusicBeatState
 		} else if (SONG.song.toLowerCase() == 'anthropophobia' && (FlxG.save.data.dcontrol == 2 || FlxG.save.data.dcontrol == 3)) {
 			_hitbox.visible = true;
 		} else {
-			androic.visible = true;
+			androidc.visible = true;
 		}
 		#end
 
@@ -3759,16 +3760,19 @@ class PlayState extends MusicBeatState
 
 		private function keyShit():Void // I've invested in emma stocks
 			{
+				var holdArray:Array<Bool> = [];
+				var pressArray:Array<Bool> = [];
+				var releaseArray:Array<Bool> = [];
 				if (usefh) {
 					// control arrays, order L D R U
-				    var holdArray:Array<Bool> = [_hitbox.K1.pressed, _hitbox.K2.pressed, _hitbox.K3.pressed, _hitbox.K4.pressed];
-				    var pressArray:Array<Bool> = [
+				    holdArray = [_hitbox.K1.pressed, _hitbox.K2.pressed, _hitbox.K3.pressed, _hitbox.K4.pressed];
+				    pressArray = [
 					    _hitbox.K1.justPressed,
 					    _hitbox.K2.justPressed,
 					    _hitbox.K3.justPressed,
 					    _hitbox.K4.justPressed
 				    ];
-				    var releaseArray:Array<Bool> = [
+				    releaseArray = [
 					    _hitbox.K1.justReleased,
 					    _hitbox.K2.justReleased,
 					    _hitbox.K3.justReleased,
@@ -3784,14 +3788,14 @@ class PlayState extends MusicBeatState
 				    #end
 				} else {
 				    // control arrays, order L D R U
-				    var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
-				    var pressArray:Array<Bool> = [
+				    holdArray = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
+				    pressArray = [
 					    controls.LEFT_P,
 					    controls.DOWN_P,
 					    controls.UP_P,
 					    controls.RIGHT_P
 				    ];
-				    var releaseArray:Array<Bool> = [
+				    releaseArray = [
 					    controls.LEFT_R,
 					    controls.DOWN_R,
 					    controls.UP_R,
