@@ -64,6 +64,10 @@ import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 import openfl.utils.Assets as OpenFlAssets;
 
+#if android
+import android.HitboxFive;
+import android.AndroidControls;
+#end
 #if windows
 import Discord.DiscordClient;
 #end
@@ -77,6 +81,8 @@ using StringTools;
 class PlayState extends MusicBeatState
 {
 	public static var instance:PlayState = null;
+	
+	public static var usefh:Bool = false;
 
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
@@ -164,7 +170,8 @@ class PlayState extends MusicBeatState
 	private var totalNotesHitDefault:Float = 0;
 	private var totalPlayed:Int = 0;
 	private var ss:Bool = false;
-
+	
+	var _hitbox:HitboxFive;
 
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
@@ -1458,8 +1465,58 @@ class PlayState extends MusicBeatState
 			replayTxt.cameras = [camHUD];
 
         #if android
-		addAndroidControls();
+        if (!PlayState.SONG.song.toLowerCase() == 'anthropophobia') {
+		    addAndroidControls();
+		} else {
+			switch(FlxG.save.data.dcontrol) {
+				case 1:
+				    androidc = new AndroidControls();
+				    switch (androidc.mode) {
+			            case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
+				            controls.setVirtualPad(androidc.vpad, FULL, NONE);
+			            case DUO:
+				            controls.setVirtualPad(androidc.vpad, DUO, NONE);
+			            case HITBOX:
+				            controls.setHitBox(androidc.hbox);
+			            default:
+		            }
+		            trackedinputs = controls.trackedinputs;
+		            controls.trackedinputs = [];
+		            var camcontrol = new FlxCamera();
+		            FlxG.cameras.add(camcontrol);
+		            camcontrol.bgColor.alpha = 0;
+		            androidc.cameras = [camcontrol];
+		            androidc.visible = false;
+		            add(androidc);
+			        _virtualpad = new FlxVirtualPad(NONE, D, 0.75, true);
+			        _virtualpad.cameras = [camcontrol];
+			        _virtualpad.visible = false;
+			        add(_virtualpad);
+			    case 2:
+			        var curcontrol:HitboxType = KSPUP;
+			        _hitbox = new Hitbox(curcontrol);
+		            var camcontrol = new FlxCamera();
+		            FlxG.cameras.add(camcontrol);
+		            camcontrol.bgColor.alpha = 0;
+		            _hitbox.cameras = [camcontrol];
+		            _hitbox.visible = false;
+		            usefh = true;
+		            add(_hitbox);
+		        case 3:
+		            var curcontrol:HitboxType = KSP;
+			        _hitbox = new Hitbox(curcontrol);
+		            var camcontrol = new FlxCamera();
+		            FlxG.cameras.add(camcontrol);
+		            camcontrol.bgColor.alpha = 0;
+		            _hitbox.cameras = [camcontrol];
+		            _hitbox.visible = false;
+		            usefh = true;
+		            add(_hitbox);
+			}
+		}
         #end
+        
+        
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1469,6 +1526,18 @@ class PlayState extends MusicBeatState
 
 		add(blasters);
 		add(DustCloud1);
+		
+		preload("icons/bf_chara", "shared");
+	    preload("icons/bf_icons", "shared");
+		preload("icons/iconsKR", "shared");
+		preload("icons/chara_icons", "shared");
+		preload("icons/paps_icons", "shared");
+		preload("icons/pico_icons", "shared");
+		preload("NotesKR/NOTE_assets_Dust", "shared");
+		preload("attack", "shared");
+		preload("-20", "shared");
+		preload("NotesKR/NOTE_assets_KR", "shared");
+	    preload("NotesKR/NOTE_assets_phantom", "shared");
 
 		startingSong = true;
 
@@ -1563,10 +1632,14 @@ class PlayState extends MusicBeatState
 		inCutscene = false;
 
 		#if android
-		androidc.visible = true;
-		if (SONG.song.toLowerCase() == 'anthropophobia')
+		if (SONG.song.toLowerCase() == 'anthropophobia' && FlxG.save.data.dcontrol == 1)
 		{
+			androidc.visible = true;
 			_virtualpad.visible = true;
+		} else if (SONG.song.toLowerCase() == 'anthropophobia' && (FlxG.save.data.dcontrol == 2 || FlxG.save.data.dcontrol == 3)) {
+			_hitbox.visible = true;
+		} else {
+			androic.visible = true;
 		}
 		#end
 
@@ -3681,28 +3754,52 @@ class PlayState extends MusicBeatState
 
 		private function keyShit():Void // I've invested in emma stocks
 			{
-				// control arrays, order L D R U
-				var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
-				var pressArray:Array<Bool> = [
-					controls.LEFT_P,
-					controls.DOWN_P,
-					controls.UP_P,
-					controls.RIGHT_P
-				];
-				var releaseArray:Array<Bool> = [
-					controls.LEFT_R,
-					controls.DOWN_R,
-					controls.UP_R,
-					controls.RIGHT_R
-				];
-				#if cpp
-				if (luaModchart != null){
-				if (controls.LEFT_P){luaModchart.executeState('keyPressed',["left"]);};
-				if (controls.DOWN_P){luaModchart.executeState('keyPressed',["down"]);};
-				if (controls.UP_P){luaModchart.executeState('keyPressed',["up"]);};
-				if (controls.RIGHT_P){luaModchart.executeState('keyPressed',["right"]);};
-				};
-				#end
+				if (usefh) {
+					// control arrays, order L D R U
+				    var holdArray:Array<Bool> = [_hitbox.K1.pressed, _hitbox.K2.pressed, _hitbox.K3.pressed, _hitbox.K4.pressed];
+				    var pressArray:Array<Bool> = [
+					    _hitbox.K1.justPressed,
+					    _hitbox.K2.justPressed,
+					    _hitbox.K3.justPressed,
+					    _hitbox.K4.justPressed
+				    ];
+				    var releaseArray:Array<Bool> = [
+					    _hitbox.K1.justReleased,
+					    _hitbox.K2.justReleased,
+					    _hitbox.K3.justReleased,
+					    _hitbox.K4.justReleased
+				    ];
+				    #if cpp
+				    if (luaModchart != null){
+				    if (_hitbox.K1.justReleased){luaModchart.executeState('keyPressed',["left"]);};
+				    if (_hitbox.K2.justReleased){luaModchart.executeState('keyPressed',["down"]);};
+				    if (_hitbox.K3.justReleased){luaModchart.executeState('keyPressed',["up"]);};
+				    if (_hitbox.K4.justReleased){luaModchart.executeState('keyPressed',["right"]);};
+				    };
+				} else {
+				    // control arrays, order L D R U
+				    var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
+				    var pressArray:Array<Bool> = [
+					    controls.LEFT_P,
+					    controls.DOWN_P,
+					    controls.UP_P,
+					    controls.RIGHT_P
+				    ];
+				    var releaseArray:Array<Bool> = [
+					    controls.LEFT_R,
+					    controls.DOWN_R,
+					    controls.UP_R,
+					    controls.RIGHT_R
+				    ];
+				    #if cpp
+				    if (luaModchart != null){
+				    if (controls.LEFT_P){luaModchart.executeState('keyPressed',["left"]);};
+				    if (controls.DOWN_P){luaModchart.executeState('keyPressed',["down"]);};
+				    if (controls.UP_P){luaModchart.executeState('keyPressed',["up"]);};
+				    if (controls.RIGHT_P){luaModchart.executeState('keyPressed',["right"]);};
+				    };
+				    #end
+				}
 		 
 				
 				// Prevent player input if botplay is on
@@ -5416,6 +5513,15 @@ class PlayState extends MusicBeatState
 			charaslash();
 		}
 	}
+	
+	public function preload(graphic:String, lib:String) //preload assets
+	{
+		var newthing:FlxSprite = new FlxSprite(0,0).loadGraphic(Paths.image(graphic, lib));
+		newthing.visible = false;
+		add(newthing);
+		remove(newthing);
+	}
+
 
 	var curLight:Int = 0;
 }

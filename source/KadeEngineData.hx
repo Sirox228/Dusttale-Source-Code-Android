@@ -36,6 +36,9 @@ class KadeEngineData
 
 		if (FlxG.save.data.fpsRain == null)
 			FlxG.save.data.fpsRain = false;
+		
+		if (FlxG.save.data.dcontrol == null)
+		    FlxG.save.data.dcontrol = 1;
 
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 60;

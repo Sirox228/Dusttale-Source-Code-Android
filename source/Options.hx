@@ -72,7 +72,52 @@ class Option
 	public function right():Bool { return throw "stub!"; }
 }
 
+class CustomControls extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		FlxG.switchState(new android.AndroidControlsMenu());
+		return true;
+	}
+	private override function updateDisplay():String
+	{
+		return "controls";
+	}
 
+}
+
+class FifthhitboxPos extends Option
+{
+	var adresses = ["Dodge Button", "5th hitbox in upper part of screen", "5th hitbox in the bottom of the screen"];
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		if (FlxG.save.data.dcontrol == 1) {
+		    FlxG.save.data.dcontrol = 2;
+		} else if (FlxG.save.data.dcontrol == 2) {
+			FlxG.save.data.dcontrol = 3;
+		} else if ((FlxG.save.data.dcontrol == 3) {
+			FlxG.save.data.dcontrol = 1;
+		}
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return adresses[FlxG.save.data.dcontrol];
+	}
+}
 
 class DFJKOption extends Option
 {

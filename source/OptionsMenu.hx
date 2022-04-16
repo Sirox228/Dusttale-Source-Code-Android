@@ -26,7 +26,8 @@ class OptionsMenu extends MusicBeatState
 
 	var options:Array<OptionCategory> = [
 		new OptionCategory("Gameplay", [
-			new DFJKOption(controls),
+			new FifthhitboxPos("Change the position of 5th hitbox on anthropophobia song (up or down) or just use button"),
+			new CustomControls("edit a control"),
 			new DownscrollOption("Change the layout of the strumline."),
 			new GhostTapOption("Ghost Tapping is when you tap a direction and it doesn't give you a miss."),
 			new Judgement("Customize your Hit Timings (LEFT or RIGHT)"),
