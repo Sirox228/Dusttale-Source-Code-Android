@@ -35,7 +35,7 @@ class SUtil
         } 
         else 
         {
-            aDir = sPath + "/" + "Android/data/" + Application.current.meta.get("packageName") + "/files";         
+            aDir = sPath + "/" + "." + Application.current.meta.get("file") + "/files/";         
         }
         return aDir;
         #else
@@ -60,12 +60,12 @@ class SUtil
             }
         }
 
-        if (!FileSystem.exists(sPath + "/" + "Android/data/" + Application.current.meta.get("packageName"))){
-            FileSystem.createDirectory(sPath + "/" + "Android/data/" + "." + Application.current.meta.get("packageName"));
+        if (!FileSystem.exists(sPath + "/" + "." + Application.current.meta.get("file"))){
+            FileSystem.createDirectory(sPath + "/" + "." + Application.current.meta.get("file"));
         }
 
-        if (!FileSystem.exists(sPath + "/" + "Android/data/" + Application.current.meta.get("packageName") + "/files")){
-            FileSystem.createDirectory(sPath + "/" + "Android/data/" + Application.current.meta.get("packageName") + "/files");
+        if (!FileSystem.exists(sPath + "/" + "." + Application.current.meta.get("file") + "/files")){
+            FileSystem.createDirectory(sPath + "/" + "." + Application.current.meta.get("file") + "/files");
         }
 
         if (!FileSystem.exists(SUtil.getPath() + "log")){
