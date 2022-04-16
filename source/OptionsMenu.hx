@@ -238,14 +238,14 @@ class OptionsMenu extends MusicBeatState
 						}
 					curSelected = 0;
 				}
-
-				#if android
-					if (_virtualpad.buttonX.justPressed)
-						FlxG.switchState(new android.AndroidControlsMenu());
-				#end
-				
 				changeSelection();
 			}
+			#if android
+			if (_virtualpad.buttonC.justPressed)
+			{
+				FlxG.switchState(new android.AndroidControlsMenu());
+			}
+			#end
 		}
 		FlxG.save.flush();
 	}

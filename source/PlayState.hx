@@ -2382,8 +2382,10 @@ class PlayState extends MusicBeatState
 		
 		var buttonPressedLOL:Bool = false;
 		
-		if (_virtualpad.buttonD.justPressed || _hitbox.KSP.justPressed) {
-			buttonPressedLOL = true;
+		if (usefh) {
+			buttonPressedLOL = _hitbox.KSP.justPressed;
+		} else {
+			buttonPressedLOL = _virtualpad.buttonD.justPressed;
 		}
 		
 		//bf slash mechanic in d.i.e
