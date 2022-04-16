@@ -1551,13 +1551,13 @@ class PlayState extends MusicBeatState
 					case 'drowning' | 'd.i.e':
 						dialogueShit(doof);
 					case 'the-murderer':
-						playCutscene('themurderer', 112, doof);
+						playCutscene('themurderer', doof);
 					case 'red-megalovania':
-						playCutscene('redmegalovania', 16, doof);
+						playCutscene('redmegalovania', doof);
 					case 'psychotic-breakdown':
-						playCutscene('psychoticbreakdown', 22, doof);
+						playCutscene('psychoticbreakdown', doof);
 					case 'anthropophobia':
-						playCutscene('anthropophobia', 18, doof);
+						playCutscene('anthropophobia', doof);
 					default:
 						startCountdown();
 				}
@@ -1586,7 +1586,7 @@ class PlayState extends MusicBeatState
 	{
 		var video:MP4Handler = new MP4Handler();
    		video.playMP4(Paths.video(videoPlaying), null); 
-		new FlxTimer().start(time, function(tmr:FlxTimer)
+		video.finishCallback = function()
 		{
 			if (dialogueBox != null)
 			{
@@ -1595,17 +1595,17 @@ class PlayState extends MusicBeatState
 			}
 			else
 				startCountdown();
-		});
+		}
 	}
 
 	function playCutscene2(videoPlaying:String,time:Float):Void
 	{
 		var video:MP4Handler = new MP4Handler();
 		video.playMP4(Paths.video(videoPlaying), null); 
-		new FlxTimer().start(time, function(tmr:FlxTimer)
+		video.finishCallback = function()
 		{
 			LoadingState.loadAndSwitchState(new PlayState());
-		});
+		}
 	}
 
 	function dialogueShit(?dialogueBox:DialogueBox):Void
