@@ -3781,6 +3781,7 @@ class PlayState extends MusicBeatState
 				    if (_hitbox.K3.justReleased){luaModchart.executeState('keyPressed',["up"]);};
 				    if (_hitbox.K4.justReleased){luaModchart.executeState('keyPressed',["right"]);};
 				    };
+				    #end
 				} else {
 				    // control arrays, order L D R U
 				    var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
