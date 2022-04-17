@@ -72,7 +72,7 @@ class HitboxFive extends FlxSpriteGroup
             {
             	hitbox_hint.loadGraphic('assets/images/androidcontrols/hitbox_five-up-hint.png');
 
-                frameshb = FlxAtlasFrames.fromSparrow('assets/images/androidcontrols/hitbox_five.png', 'assets/images/androidcontrols/hitbox_five.xml');
+                frameshb = FlxAtlasFrames.fromSparrow('assets/images/androidcontrols/hitbox_five-up.png', 'assets/images/androidcontrols/hitbox_five-up.xml');
                 sizex = 320;
                 
                 hitbox.add(add(K1 = createhitboxalt(0, 240, "K1"))); 
